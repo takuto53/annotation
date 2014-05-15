@@ -1,0 +1,392 @@
+'use strict';
+var flagA;
+var flagC = false;
+var pdftitle = '/assets/' + gon.hoge;
+function Memo() {
+  flagA = true;
+  flagC = false;
+  document.getElementById('black').style.display="none";
+  document.getElementById('red').style.display="none";
+  window.alert("memo");
+}
+function Line(){
+  flagA = 2;
+  flagC = false;
+  window.alert("line");
+  document.getElementById('black').style.display="inline";
+  document.getElementById('red').style.display="inline";
+}
+function Sline(){
+  flagA = 3;
+  flagC = false;
+  window.alert("line");
+  document.getElementById('black').style.display="inline";
+  document.getElementById('red').style.display="inline";
+}
+function Eraser(){
+  flagA = 2;
+  flagC = true;
+  document.getElementById('black').style.display="none";
+  document.getElementById('red').style.display="none";
+  window.alert("Eraser");
+}
+
+var pdfpage=1;
+var pdfinfo;
+
+
+//var pdfname = $("#3").attr("class")
+
+
+
+var flagD = true;
+function Black()
+{ 
+  flagD = true;
+   window.alert("Black");
+}
+function Red()
+{ 
+  flagD = false;
+   window.alert("Red");
+   
+}
+//(function($){
+//  $('#dialog2').accordion();
+//  })(jQuery);
+ 
+
+function Save(){
+  var canvas = document.getElementById("the-canvas");
+  if (canvas.getContext) {
+    var  ctx = canvas.getContext('2d');
+    var img=new Image();
+    var type = 'image/png';
+    img.src = canvas.toDataURL(type);
+    $('#lines [id = annotation_line]').val(img.src);
+    $('#lines [id=annotation_page]').val(Number(pdfpage));
+    $('#lines').dialog();
+//    window.alert(img.src);
+//    img.onload = function(){
+//    location.href = img.src;
+//    };
+  }
+}
+
+$(document).ready(function(){
+    $('.accordion_head').click(function() {
+        $(this).next().slideToggle();
+    }).next().hide();
+});
+
+function Return(num){
+  var id = num.id;
+	$('#new_comment [id=comment_p_id]').val(String(id));
+
+
+  } 
+    
+    var scale;
+    var viewport;
+    var canvas;
+    var context;
+    var scanvas;
+    var scontext;
+    var ucanvas;
+    var ucontext;
+
+
+//PDFJS.getDocument('/assets/aaaaa.pdf').then(function(pdf) {
+PDFJS.getDocument(pdftitle).then(function (pdf) {
+  pdf.getPage(pdfpage).then(function(page) {
+  //window.addEventListener("load", function(){
+    pdfinfo = pdf;
+    scale = 1.5;
+    viewport = page.getViewport(scale);
+    canvas = document.getElementById('the-canvas');
+    context = canvas.getContext('2d');
+    scanvas = document.getElementById('second-canvas');
+    scontext = scanvas.getContext('2d');
+    ucanvas = document.getElementById('under-canvas');
+    ucontext = ucanvas.getContext('2d');
+    context.globalAlpha = 1.0;
+
+    var startX = 0;
+    var startY = 0;
+    var flag = false;
+    var arrayX = [];
+    var arrayY = [];
+    var subwin;
+    var image = new Image();
+    image.src = "/assets/sample1.png";
+    var pos_x;
+    var pos_y;
+    var pos_page;
+//-----------------------------------------------------------------------------------
+    canvas.addEventListener("mousedown", function(event) {
+      flag = true;
+      var rect = event.target.getBoundingClientRect();
+      startX = event.clientX - rect.left;
+      startY = event.clientY - rect.top;
+      for (var i = 0; i < $(".comment").size(); i= i+1) {
+        document.getElementById('pdf_' + i).style.display="none";
+
+		  }
+		}, true);
+//------------------------------------------------------------------------------------		
+		canvas.addEventListener("mousemove", function(event){
+      if (flagA == 2) {
+        if (flag) {
+          var rect = event.target.getBoundingClientRect();
+          var x = event.clientX - rect.left;
+          var y = event.clientY - rect.top;
+          if(flagC == true) {
+            context.lineWidth = 50;
+            context.globalCompositeOperation = 'destination-out';
+            context.strokeStyle = "#000000";          
+          } 
+          else {
+            context.lineWidth = 5;
+            context.globalCompositeOperation = 'source-over';
+            if (flagD == true ){
+              context.strokeStyle = "#000000";
+              }
+            if (flagD == false){
+               context.strokeStyle = "#FF0000";
+              }
+          }
+          context.beginPath();
+//          context.strokeStyle = "#FF0000";
+          context.moveTo(startX, startY);
+          context.lineTo(x, y);
+          context.stroke();
+          startX = x;
+          startY = y;
+        }
+      }
+    }, true);
+//------------------------------------------------------------------------------------  
+    canvas.addEventListener("mouseup", function(event){
+      if (flag) {
+        var rect = event.target.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        context.beginPath();
+        context.lineWidth = 5;
+        context.strokeStyle = "#000000";
+        context.moveTo(startX, startY);
+  //      context.stroke();
+        if (flagA == 3){
+          if(flagD == true)
+          {
+            context.strokeStyle = "#000000";
+            if(eval(startY -y) <= 40 && eval(startY -y) >= -40){
+            context.lineTo(x, startY);}
+            else{  context.lineTo(x, y);}
+          }
+          else
+          {
+            context.strokeStyle = "#FF0000";
+            if(eval(startY -y) <= 40 && eval(startY -y) >= -40){
+            context.lineTo(x, startY);}
+            else{  context.lineTo(x, y);}
+          }
+          context.stroke();
+          startX = x;
+          startY = y;}
+        
+        if (flagA == true) {
+          var flagB = false;
+          for (var i = 0; i< $(".comment").size(); i= i+1) {
+//            listx = document.getElementById('pdf_' + i).innerHTML;
+//            listx = parseInt(listx)
+//            listy = document.getElementById('pdf_' + eval(i+1)).innerHTML;
+//            listy = parseInt(listy)
+              pos_x = Number($("#pdf_" + i).attr("pos_x"));
+              pos_y = Number($("#pdf_" + i).attr("pos_y"));
+              pos_page = Number($("#pdf_" + i).attr("pdf_page"));
+            if (x > pos_x && x < pos_x + 50 && y > pos_y && y < pos_y + 50 && pos_page == pdfpage) {
+              flagB = true;
+		    	    var com_i = i;
+		    	    var com_x = pos_x;
+		    	    var com_y = pos_y;
+		    	    document.getElementById('pdf_' + i).style.display="block";
+//		    	    document.getElementById('pdf_' + eval(i+3)).style.display="block";
+//		    	    var listart =document.getElementById('pdf_' + eval(i+2)).innerHTML;
+//              var listcom =document.getElementById('pdf_' + eval(i+3)).innerHTML;
+                var listcom =$("#pdf_" + i).attr("listcom");
+                
+		    	  }
+		    	}
+		      if (flagB == false) {
+		        $('#new_comment [id=comment_x]').val(Number(x));
+            $('#new_comment [id=comment_y]').val(Number(y));
+            $('#new_comment [id=comment_page]').val(Number(pdfpage));
+            $('#dialog').dialog();
+          } else {
+            $('#new_comment [id=comment_x]').val(Number(com_x));
+            $('#new_comment [id=comment_y]').val(Number(com_y));
+            $('#new_comment [id=comment_page]').val(Number(pdfpage));
+            $('#dialog2').dialog();
+          }
+          arrayX[arrayX.length]=x;
+          arrayY[arrayY.length]=y;
+        } else {
+        }
+      }
+      flag = false;
+    });
+//-------------------------------------------------------------------
+/*    canvas.addEventListener("dblclick", function(e) {
+      var rect = e.target.getBoundingClientRect();
+	    var mouseX1 = e.clientX - rect.left;
+	    var mouseY1 = e.clientY - rect.top;
+      for (var i = 0; i < arrayX.length; i=i +1) { 
+	      if (mouseX1 > arrayX[i] && mouseX1 < arrayX[i] + 30) {
+		      if (mouseY1 > arrayY[i] && mouseY1 < arrayY[i] + 30) {
+		    	  location.href = "http://localhost:3000/comments/new";
+		      }
+	      }
+      }
+    },false);
+*/    
+//-----------------------------------------------------------------------
+    canvas.addEventListener("mouseleave", function(event) {
+      flag = false;
+    });     
+//---------------------------------------------------------------------
+    ucanvas.height = viewport.height;
+    ucanvas.width = viewport.width;
+    scanvas.height = viewport.height;
+    scanvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;  
+      
+    var renderContext = {
+      canvasContext: ucontext,
+      viewport: viewport
+    };
+    page.render(renderContext);
+    
+       
+    
+    for (var i = 0; i < $(".comment").size(); i= i+1) { 
+      //pos_x = Number($("#pdf_" + i).attr("pos_x"));
+      //pos_y = Number($("#pdf_" + i).attr("pos_y"));
+      pos_x = Number($("#pdf_" + i).attr("pos_x"));
+      pos_y = Number($("#pdf_" + i).attr("pos_y"));
+//      listx = document.getElementById('pdf_' + i).innerHTML;
+//      listy = document.getElementById('pdf_' + eval(i+1)).innerHTML;
+      pos_page = Number($("#pdf_" + i).attr("pdf_page"));
+      if (pos_page == 1){
+      scontext.drawImage(image, pos_x, pos_y, 50, 50);
+      }
+    }
+    
+    
+for(var i=0; i < $(".anno").size(); i=i+1){
+
+    var apos_page = Number($("#anno_" + i).attr("pdf_page"));
+    var k = -1;
+//    oimage.onload = function() {
+    if(apos_page == 1){
+    var k = i;
+//    var base64 = document.getElementById('anno_' + i).innerHTML;
+//    var oimage = new Image();
+//    oimage.src = base64;
+//      }
+    }
+    
+   }
+    if(k != -1){
+    var base64 = document.getElementById('anno_' + k).innerHTML;
+    var oimage = new Image();
+    oimage.src = base64;
+    context.drawImage(oimage, 0, 0);
+    }
+  });
+});
+
+function renderPage(num){
+  pdfinfo.getPage(num).then(function(page){
+
+    ucanvas.height = viewport.height;
+    ucanvas.width = viewport.width;
+    scanvas.height = viewport.height;
+    scanvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.width = viewport.width; 
+    var image = new Image();
+    image.src = "/assets/sample1.png";
+    
+    
+    var renderUContext ={
+      canvasContext: ucontext,
+      viewport: viewport
+    };
+    
+    var renderSContext ={
+      canvasContext: scontext,
+      viewport: viewport
+    };
+    
+    var renderContext ={
+      canvasContext: context,
+      viewport: viewport
+    };
+    
+    page.render(renderUContext);
+//    page.render(renderSContext);
+//    page.render(renderContext);
+    
+    for (var i = 0; i < $(".comment").size(); i= i+1) { 
+      //pos_x = Number($("#pdf_" + i).attr("pos_x"));
+      //pos_y = Number($("#pdf_" + i).attr("pos_y"));
+    var  pos_x = Number($("#pdf_" + i).attr("pos_x"));
+    var  pos_y = Number($("#pdf_" + i).attr("pos_y"));
+//      listx = document.getElementById('pdf_' + i).innerHTML;
+//      listy = document.getElementById('pdf_' + eval(i+1)).innerHTML;
+    var  pos_page = Number($("#pdf_" + i).attr("pdf_page"));
+      if (pos_page == num){
+      scontext.drawImage(image, pos_x, pos_y, 50, 50);
+      }
+    }
+    
+    
+    for(var i=0; i < $(".anno").size(); i=i+1){
+    var k = -1;
+    var apos_page = Number($("#anno_" + i).attr("pdf_page"));
+
+//    oimage.onload = function() {
+        if(apos_page == num){
+          k = i;
+          var base64 = document.getElementById('anno_' + i).innerHTML;
+          var oimage = new Image();
+          oimage.src = base64;
+        }
+//      }
+    }  
+    context.drawImage(oimage, 0, 0);
+    
+
+    
+    
+    
+  });
+}
+
+
+function Next(){
+
+ pdfpage = eval(pdfpage +1);
+ renderPage(pdfpage);
+}
+
+
+function Back(){
+ if(pdfpage != 1)
+ pdfpage = eval(pdfpage -1);
+ renderPage(pdfpage);
+}
+
+

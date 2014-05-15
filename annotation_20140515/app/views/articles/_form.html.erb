@@ -1,0 +1,25 @@
+<%= form_for(@article, :html => {:multipart => true}) do |f| %>
+  <% if @article.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+      <ul>
+      <% @article.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+
+  <label>ファイルを指定：
+   <%= file_field_tag 'upfile', { :size => 50 } %></label>
+    
+  <div class="field">
+
+    <%= f.hidden_field :title %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

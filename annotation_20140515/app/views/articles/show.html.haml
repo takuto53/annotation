@@ -1,0 +1,201 @@
+#lines{style:"display: none;"}
+  = render 'form_tag'
+#dialog2(){style:"display: none;"}
+
+  - @comments.each_with_index do |pdf, i|
+    .comment{id: "pdf_#{i}", pos_x: pdf.x, pos_y: pdf.y, listcom: pdf.comment, pdf_page: pdf.page, comid: pdf.id, pid: pdf.p_id, uid: pdf.user_id }
+      - if "#{pdf.p_id}" == "" 
+        %form        
+          %h{id: "comment_#{i}"} #{pdf.user_id}:
+          = line_break_to_br1(pdf.user_id, pdf.comment)
+          %input{type: "button", value: "返信", onclick: "Return(pdf_#{i})"}
+          = link_to '編集', edit_comment_path("#{pdf.id}")
+          %h 　
+          - if "#{pdf.updated_at}" == ""
+            %h #{pdf.created_at.strftime('%Y年%m月%d日 %H:%M')}
+          - else
+            %h #{pdf.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+        - @comments.each_with_index do |pdf2, j|
+          - if "#{pdf.id}" == "#{pdf2.p_id}"
+            %form        
+              %h{id: "comment_#{j}"} 　└ #{pdf2.user_id}:
+              = line_break_to_br2(pdf2.user_id, pdf2.comment)
+              %input{type: "button", value: "返信", onclick: "Return(pdf_#{j})"}
+              = link_to '編集', edit_comment_path("#{pdf2.id}")
+              %h 　
+              - if "#{pdf2.updated_at}" == ""
+                %h #{pdf2.created_at.strftime('%Y年%m月%d日 %H:%M')}
+              - else
+                %h #{pdf2.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+            - @comments.each_with_index do |pdf3, k|
+              - if "#{pdf2.id}" == "#{pdf3.p_id}"
+                %form        
+                  %h{id: "comment_#{k}"} 　│　└ #{pdf3.user_id}:
+                  = line_break_to_br3(pdf3.user_id, pdf3.comment)
+                  %input{type: "button", value: "返信", onclick: "Return(pdf_#{k})"}
+                  = link_to '編集', edit_comment_path("#{pdf3.id}")
+                  %h 　
+                  - if "#{pdf3.updated_at}" == ""
+                    %h #{pdf3.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                  - else
+                    %h #{pdf3.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                - @comments.each_with_index do |pdf4, l|
+                  - if "#{pdf3.id}" == "#{pdf4.p_id}"
+                    %form        
+                      %h{id: "comment_#{l}"} 　│　│　└ #{pdf4.user_id}:
+                      = line_break_to_br4(pdf4.user_id, pdf4.comment)
+                      %input{type: "button", value: "返信", onclick: "Return(pdf_#{l})"}
+                      = link_to '編集', edit_comment_path("#{pdf4.id}")
+                      %h 　
+                      - if "#{pdf4.updated_at}" == ""
+                        %h #{pdf4.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                      - else
+                        %h #{pdf4.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                    - @comments.each_with_index do |pdf5, m|
+                      - if "#{pdf4.id}" == "#{pdf5.p_id}"
+                        %form        
+                          %h{id: "comment_#{m}"} 　│　│　│　└ #{pdf5.user_id}:
+                          = line_break_to_br5(pdf5.user_id, pdf5.comment)
+                          %input{type: "button", value: "返信", onclick: "Return(pdf_#{m})"} 
+                          = link_to '編集', edit_comment_path("#{pdf5.id}")
+                          %h 　
+                          - if "#{pdf5.updated_at}" == ""
+                            %h #{pdf5.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                          - else
+                            %h #{pdf5.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                        - @comments.each_with_index do |pdf6, n|
+                          - if "#{pdf5.id}" == "#{pdf6.p_id}"
+                            %form        
+                              %h{id: "comment_#{n}"} 　│　│　│　│　└ #{pdf6.user_id}:
+                              = line_break_to_br6(pdf6.user_id, pdf6.comment)
+                              %input{type: "button", value: "返信", onclick: "Return(pdf_#{n})"} 
+                              = link_to '編集', edit_comment_path("#{pdf6.id}")
+                              %h 　
+                              - if "#{pdf6.updated_at}" == ""
+                                %h #{pdf6.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                              - else
+                                %h #{pdf6.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                            - @comments.each_with_index do |pdf7, o|
+                              - if "#{pdf6.id}" == "#{pdf7.p_id}"
+                                %form        
+                                  %h{id: "comment_#{o}"} 　│　│　│　│　│　└ #{pdf7.user_id}:
+                                  = line_break_to_br7(pdf7.user_id, pdf7.comment)
+                                  %input{type: "button", value: "返信", onclick: "Return(pdf_#{o})"}
+                                  = link_to '編集', edit_comment_path("#{pdf7.id}")
+                                  %h 　
+                                  - if "#{pdf7.updated_at}" == ""
+                                    %h #{pdf7.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                                  - else
+                                    %h #{pdf7.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                                - @comments.each_with_index do |pdf8, p|
+                                  - if "#{pdf7.id}" == "#{pdf8.p_id}"
+                                    %form        
+                                      %h{id: "comment_#{p}"} 　│　│　│　│　│　│　└ #{pdf8.user_id}:
+                                      = line_break_to_br8(pdf8.user_id, pdf8.comment)
+                                      %input{type: "button", value: "返信", onclick: "Return(pdf_#{p})"}
+                                      = link_to '編集', edit_comment_path("#{pdf8.id}")
+                                      %h 　
+                                      - if "#{pdf8.updated_at}" == ""
+                                        %h #{pdf8.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                                      - else
+                                        %h #{pdf8.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                                    - @comments.each_with_index do |pdf9, q|
+                                      - if "#{pdf8.id}" == "#{pdf9.p_id}"
+                                        %form        
+                                          %h{id: "comment_#{q}"} 　│　│　│　│　│　│　│　└ #{pdf9.user_id}:
+                                          = line_break_to_br9(pdf9.user_id, pdf9.comment)
+                                          %input{type: "button", value: "返信", onclick: "Return(pdf_#{q})"}
+                                          = link_to '編集', edit_comment_path("#{pdf9.id}")
+                                          %h 　
+                                          - if "#{pdf9.updated_at}" == ""
+                                            %h #{pdf9.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                                          - else
+                                            %h #{pdf9.updated_at.strftime('%Y年%m月%d日 %H:%M')}
+                                        - @comments.each_with_index do |pdf10, r|
+                                          - if "#{pdf9.id}" == "#{pdf10.p_id}"
+                                            %form        
+                                              %h{id: "comment_#{r}"} 　│　│　│　│　│　│　│　│　└ #{pdf10.user_id}:
+                                              = line_break_to_br10(pdf10.user_id, pdf10.comment)
+                                              = link_to '編集', edit_comment_path("#{pdf10.id}") 
+                                              %h 　
+                                              - if "#{pdf10.updated_at}" == ""
+                                                %h #{pdf10.created_at.strftime('%Y年%m月%d日 %H:%M')}
+                                              - else
+                                                %h #{pdf10.updated_at.strftime('%Y年%m月%d日 %H:%M')}       
+  %br
+  #reload
+  #res
+  %br
+  %input{id: "newcommentbutton", type: "button", value: "新規コメント", onclick: "Newcomment()"} 
+  %br
+  %br 
+  #state
+  = render 'comments/form' 
+  %input{id: "submitbutton", type: "button", value: "送信", onclick: "Submit()"} 
+  %input{id: "submitbutton2", type: "button", value: "送信", onclick: "Submit2()"} 
+     
+- @anno.each_with_index do |anno, j|
+  .anno{id: "anno_#{j}" ,pdf_page: anno.page, anno_user: anno.user, style: "display: none;"}
+    = anno.line 
+#pdf{style:"display: none;"}
+  =@article.title
+%br
+
+#choooose
+
+  %input{id:"anbutton",type: "button", value: "アノテーション表示/非表示", onclick: "Appear()", style:"WIDTH: 200px;background-color:#ffcccc;"}
+  %input{id:"other",type: "button", value: "他アノテーション表示/非表示", onclick: "Another()", style:"WIDTH: 200px;background-color:#ffcccc;"}
+  //%input{type: "button", value: "アノテーション非表示", onclick: "Disappear()", style:"WIDTH: 150px;"}
+  %div{align: "right", style: "font-size:15px;"}
+    = link_to '論文選択に戻る',  :controller => "articles", :action => "index"
+  
+  %input{id:"memo", type: "button", value: "テキストメモ", onclick: "Memo()", style:"WIDTH: 100px;background-color:#ffcccc;"}
+  %input{id:"line", type: "button", value: "フリーライン", onclick: "Line()", style:"WIDTH: 100px;"}
+  %input{id:"sline", type: "button", value: "直線", onclick: "Sline()", style:"WIDTH: 100px;"}
+  %input{id:"eraser", type: "button", value: "消しゴム", onclick: "Eraser()", style:"WIDTH: 100px;"}
+  %input{id:"undo", type: "button", value: "一つ戻す" , style:"display: none; WIDTH: 100px;"}
+  %input{id:"redo", type: "button", value: "やり直し" , style:"display: none; WIDTH: 100px;"}
+  #choose
+  /  %h 選択されている機能：
+  /  %input{id: "choice",type: "text", value: "テキストメモ", size:"6" ,readonly:"readonly", style:"background-color:#ffcccc; text-align:center;"} 
+  %br
+  %input{id:"black", type: "button", value: "黒", onclick: "Black()", style:"display: none; WIDTH: 100px;background-color:#ffcccc;" }
+  %input{id:"red",type: "button", value: "赤", onclick: "Red()", style:"display: none; WIDTH: 100px;"}
+  %input{id:"blue",type: "button", value: "青", onclick: "Blue()", style:"display: none; WIDTH: 100px;"}
+  %input{id:"yellow",type: "button", value: "ハイライト", onclick: "Yellow()", style:"display: none; WIDTH: 100px;"}
+  %br
+  %input{id:"b4", type: "button", value: "極太", onclick: "B4()", style:"display: none; WIDTH: 100px;"}
+  %input{id:"b3",type: "button", value: "太", onclick: "B3()", style:"display: none; WIDTH: 100px;"}
+  %input{id:"b2",type: "button", value: "細", onclick: "B2()", style:"display: none; WIDTH: 100px;background-color:#ffcccc;"}
+  %input{id:"b1",type: "button", value: "極細", onclick: "B1()", style:"display: none; WIDTH: 100px;"}  　
+  %br
+  %br
+  %input{type: "button", value: "前ページ", onclick: "Back()", style:"WIDTH: 100px;"}
+  %input{type: "button", value: "次ページ", onclick: "Next()", style:"WIDTH: 100px;"}
+  %input{type: "button", value: "指定ページ", onclick: "Move()", style:"WIDTH: 100px;"}
+  %span
+    Page:
+    %span{id: "page_num"}
+    \/ 
+    %span{id: "page_count"}
+    %br
+
+
+%canvas#under-canvas{style: "border:1px solid black; position: absolute; z-index: 0;", width: "500", height: "400"}
+%canvas#second-canvas{style: "border:1px solid black; position: absolute; z-index: 1;", width: "500", height: "400"}
+%canvas#the-canvas{style: "border:1px solid black;  position: absolute;  z-index: 300;", width: "500", height: "400"}
+- @user.each_with_index do |user, i|
+  .user{id: "user_#{i}", name: user.name, user_id: user.userid, number: i}
+    %canvas{id: "the-canvas_#{i}", style: "border:1px solid black; position: absolute; z-index: #{i+3};", width: "500", height: "400"}
+
+
+
+
+
+
+
+
+
+
+
+

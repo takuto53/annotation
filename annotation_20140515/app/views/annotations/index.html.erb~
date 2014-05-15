@@ -1,0 +1,29 @@
+<h1>Listing annotations</h1>
+
+<table>
+  <tr>
+<!--    <th>Line</th>  -->
+    <th>Article</th>
+    <th>Page</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @annotations.each do |annotation| %>
+  <tr>
+<!--    <td><%= annotation.line %></td>  -->
+    <td><%= annotation.article_id %></td>
+    <td><%= annotation.page %></td>
+    <td><%= annotation.user %></td>
+    <td><%= link_to 'Show', annotation %></td>
+    <td><%= link_to 'Edit', edit_annotation_path(annotation) %></td>
+    <td><%= link_to 'Destroy', annotation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Annotation', new_annotation_path %>

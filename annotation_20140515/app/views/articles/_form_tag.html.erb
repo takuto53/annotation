@@ -1,0 +1,21 @@
+<%= form_tag({:controller =>'articles', :action => 'create_line'}) do %>
+  <div class="field" >
+
+    <%= hidden_field :annotation, :line, :size=>'30x10' %>
+  </div>  
+  <div class="field">
+    <%= hidden_field :annotation,:article_id %>
+  </div>
+
+  <div class="field">
+    <%= hidden_field :annotation,:user %>
+  </div>
+
+  <div class="actions">
+  <div class="field">
+    <%= hidden_field :annotation,:page %>
+  </div>
+  <label>保存します。よろしいですか？</label>
+    <%= submit_tag 'ok' %>
+  </div>
+<% end %>

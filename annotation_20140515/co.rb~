@@ -1,0 +1,8 @@
+hamls = Dir["app/views/**/*.haml"] - ['app/views/layouts/screen.html.haml'];
+hamls.each do |haml| 
+  puts haml
+  erb = haml.sub(/\.haml$/, '.erb')
+  File.open(erb, 'w') do |file| 
+    file.write Haml2Erb.convert(File.read(haml)) 
+  end
+end
